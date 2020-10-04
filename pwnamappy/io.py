@@ -9,13 +9,15 @@ class CsvExporter:
 
     def __call__(self, result):
         stream = self._stream()
-        writer = csv.writer(stream)
-        writer.writerow(
-            ['Name', 'Password', 'SSID', 'Latitude', 'Longitude'])
-        for (network, location) in result.items():
-            writer.writerow([network.name, network.password,
-                             network.addr, location.lat, location.lon])
-        stream.close()
+        try:
+            writer = csv.writer(stream)
+            writer.writerow(
+                ['Name', 'Password', 'SSID', 'Latitude', 'Longitude'])
+            for (network, location) in result.items():
+                writer.writerow([network.name, network.password,
+                                 network.addr, location.lat, location.lon])
+        finally:
+            stream.close()
 
 
 class CsvImporter:
