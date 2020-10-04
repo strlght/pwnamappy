@@ -2,7 +2,7 @@ import argparse
 import sys
 from pwnamappy.wpasec import ApiRetriever
 from pwnamappy.wpasec import FileRetriever
-from pwnamappy.wiggle import WiggleMapper
+from pwnamappy.wigle import WigleMapper
 from pwnamappy.output import CsvFormatter
 from pwnamappy.log import Logger
 
@@ -43,7 +43,7 @@ def main():
     group.add_argument('-ws', '--wpa-sec-key', type=str, default=None)
     group.add_argument('-f', '--input', metavar='in-file',
                        type=argparse.FileType('r'))
-    parser.add_argument('-wg', '--wiggle-key', type=str,
+    parser.add_argument('-wg', '--wigle-key', type=str,
                         default=None, required=True)
     parser.add_argument('-o', '--output', metavar='out-file',
                         type=argparse.FileType('w'))
@@ -56,8 +56,8 @@ def main():
         retriever = FileRetriever(args.input)
 
     mapper = None
-    if args.wiggle_key:
-        mapper = WiggleMapper(args.wiggle_key)
+    if args.wigle_key:
+        mapper = WigleMapper(args.wigle_key)
 
     destination = None
     if args.output:
