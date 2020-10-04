@@ -1,5 +1,8 @@
 from setuptools import setup, find_packages
 
+with open('requirements.txt') as fp:
+    required = [line.strip() for line in fp if line.strip() != ""]
+
 setup(
     name='pwnamappy',
     version='0.0.1',
@@ -7,5 +10,6 @@ setup(
     author='Grigorii Dzhanelidze',
     url='https://github.com/strlght/pwnamappy',
     license='Apache License 2.0',
+    install_requires=required,
     packages=find_packages()
 )
