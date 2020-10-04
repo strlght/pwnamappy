@@ -14,6 +14,8 @@ def _extract_nets_from_strings(values):
     processed = set()
     nets = []
     for row in csv_reader:
+        if len(row) != 4:
+            continue
         raw_addr = row[0]
         if raw_addr in processed:
             continue
@@ -32,7 +34,7 @@ class ApiRetriever:
     def __call__(self):
         cookies = {'key': self._key}
         response = requests.get(WPA_SEC_RETRIEVE_URL, cookies=cookies)
-        keys = response.text.split('\n')[:-1][::-1]
+        keys = response.text.split('\n')[::-1]
         return _extract_nets_from_strings(keys)
 
 

@@ -72,18 +72,15 @@ def main():
     try:
         with open(destination, 'r') as input_file:
             input_contents = input_file.readlines()
-    except Exception as exception:
-        logger.verbose("Failed to parse input file: %s" % exception)
+    except IOError as error:
+        logger.info("Failed to parse input file: %s" % error)
     importer = None
     if input_contents:
         importer = CsvImporter(input_contents)
 
-    output_file = open(destination, 'w+')
-    exporter = CsvExporter(output_file)
+    exporter = CsvExporter(lambda: open(destination, 'w+'))
 
     run_pipeline(logger, retriever, mapper, importer, exporter)
-
-    output_file.close()
 
 
 if __name__ == '__main__':
