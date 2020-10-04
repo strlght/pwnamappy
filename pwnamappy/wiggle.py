@@ -1,5 +1,4 @@
 import requests
-import json
 from pwnamappy.model import Network
 from pwnamappy.model import Location
 
@@ -28,7 +27,7 @@ class WiggleMapper(object):
         r = requests.get(WIGGLE_NETWORK_DETAIL_URL, params=params, auth=auth)
         if r.status_code == 401:
             raise ApiKeyException()
-        response_json: dict = json.loads(r.text)
+        response_json: dict = r.json()
         if response_json['success'] and len(response_json['results']) > 0:
             result_json = response_json['results'][0]
             lat = result_json['trilat']
