@@ -6,7 +6,7 @@ with open('requirements.txt') as fp:
 setup(
     name='pwnamappy',
     version='0.0.1',
-    description='Turn every pwn into pin',
+    description='Turn pwns into pins',
     author='Grigorii Dzhanelidze',
     url='https://github.com/strlght/pwnamappy',
     license='Apache License 2.0',
