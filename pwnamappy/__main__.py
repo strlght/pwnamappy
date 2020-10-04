@@ -1,12 +1,11 @@
 import argparse
-import sys
 from pwnamappy.wpasec import ApiRetriever, FileRetriever
 from pwnamappy.wigle import WigleMapper
-from pwnamappy.output import CsvExporter
+from pwnamappy.io import CsvExporter, CsvImporter
 from pwnamappy.log import Logger
 
 
-def run_pipeline(logger, retriever, mapper, exporter):
+def run_pipeline(logger, retriever, mapper, importer, exporter):
     nets = []
     if callable(retriever):
         logger.info('Retrieving networks')
@@ -14,9 +13,15 @@ def run_pipeline(logger, retriever, mapper, exporter):
         logger.info('Got %d unique networks' % len(nets))
 
     coordinates = {}
+    if callable(importer):
+        coordinates = importer()
+
     if len(nets) > 0 and callable(mapper):
         logger.info('Mapping networks')
+        count = 0
         for net in nets:
+            if net in coordinates:
+                continue
             logger.verbose('Mapping %s %s' % (net.addr, net.name))
             location = None
             try:
@@ -26,12 +31,13 @@ def run_pipeline(logger, retriever, mapper, exporter):
                 break
             if location:
                 coordinates[net] = location
+                count = count + 1
             else:
-                logger.info('No location found for %s %s' %
-                            (net.addr, net.name))
-        logger.info('Mapped %d networks' % len(coordinates))
+                logger.verbose('No location found for %s %s' %
+                               (net.addr, net.name))
+        logger.info('Mapped %d networks' % count)
 
-    if len(coordinates) > 0 and callable(exporter):
+    if callable(exporter):
         logger.info('Saving results')
         exporter(coordinates)
 
@@ -40,13 +46,15 @@ def main():
     parser = argparse.ArgumentParser(description='Plots wifis on map')
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('-ws', '--wpa-sec-key', type=str, default=None)
-    group.add_argument('-f', '--input', metavar='in-file',
+    group.add_argument('-wsf', '--input', metavar='in-file',
                        type=argparse.FileType('r'))
     parser.add_argument('-wg', '--wigle-key', type=str,
                         default=None, required=True)
-    parser.add_argument('-o', '--output', metavar='out-file',
-                        type=argparse.FileType('w'))
+    parser.add_argument('-f', '--file', default='pwnamappy.csv',
+                        type=str)
     args = parser.parse_args()
+
+    logger = Logger()
 
     retriever = None
     if args.wpa_sec_key:
@@ -58,17 +66,24 @@ def main():
     if args.wigle_key:
         mapper = WigleMapper(args.wigle_key)
 
-    destination = None
-    if args.output:
-        destination = args.output
-    else:
-        destination = sys.stdout
+    destination = args.file
 
-    exporter = CsvExporter(destination)
+    input_contents = None
+    try:
+        with open(destination, 'r') as input_file:
+            input_contents = input_file.readlines()
+    except Exception as exception:
+        logger.verbose("Failed to parse input file: %s" % exception)
+    importer = None
+    if input_contents:
+        importer = CsvImporter(input_contents)
 
-    logger = Logger()
+    output_file = open(destination, 'w+')
+    exporter = CsvExporter(output_file)
 
-    run_pipeline(logger, retriever, mapper, exporter)
+    run_pipeline(logger, retriever, mapper, importer, exporter)
+
+    output_file.close()
 
 
 if __name__ == '__main__':
