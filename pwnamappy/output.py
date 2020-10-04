@@ -1,7 +1,7 @@
 import csv
 
 
-class CsvFormatter(object):
+class CsvFormatter:
     def __init__(self, output):
         self._output = output
 
@@ -9,5 +9,6 @@ class CsvFormatter(object):
         writer = csv.writer(self._output)
         writer.writerow(
             ['Name', 'Password', 'Addr', 'Latitude', 'Longitude'])
-        for (k, v) in result.items():
-            writer.writerow([k.name, k.password, k.addr, v.lat, v.lon])
+        for (network, location) in result.items():
+            writer.writerow([network.name, network.password,
+                             network.addr, location.lat, location.lon])

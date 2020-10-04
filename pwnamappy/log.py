@@ -1,8 +1,7 @@
-import datetime
 import sys
 
 
-class Logger(object):
+class Logger:
     def __init__(self, output=sys.stdout, level=0):
         self._output = output
         self._level = level

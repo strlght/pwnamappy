@@ -15,7 +15,7 @@ class ApiKeyException(Exception):
         return "Invalid API key :("
 
 
-class WiggleMapper(object):
+class WiggleMapper:
     def __init__(self, key: str):
         auth_pair = key.split(':')
         self._username = auth_pair[0]
@@ -24,15 +24,16 @@ class WiggleMapper(object):
     def __call__(self, net: Network):
         auth = requests.auth.HTTPBasicAuth(self._username, self._password)
         params: dict = {'netid': net.addr}
-        r = requests.get(WIGGLE_NETWORK_DETAIL_URL, params=params, auth=auth)
-        if r.status_code == 401:
+        response = requests.get(
+            WIGGLE_NETWORK_DETAIL_URL, params=params, auth=auth)
+        if response.status_code == 401:
             raise ApiKeyException()
-        response_json: dict = r.json()
+        response_json: dict = response.json()
         if response_json['success'] and len(response_json['results']) > 0:
             result_json = response_json['results'][0]
             lat = result_json['trilat']
             lon = result_json['trilong']
             return Location(lat, lon)
-        elif response_json['message'] == 'too many queries today.':
+        if response_json['message'] == 'too many queries today.':
             raise ThrottleException()
         return None

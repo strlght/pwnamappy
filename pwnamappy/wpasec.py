@@ -1,5 +1,5 @@
-import requests
 import csv
+import requests
 from pwnamappy.model import Network
 
 WPA_SEC_RETRIEVE_URL = 'https://wpa-sec.stanev.org/?api&dl=1'
@@ -25,18 +25,18 @@ def _extract_nets_from_strings(values):
     return nets
 
 
-class ApiRetriever(object):
+class ApiRetriever:
     def __init__(self, key):
         self._key = key
 
     def __call__(self):
         cookies = {'key': self._key}
-        r = requests.get(WPA_SEC_RETRIEVE_URL, cookies=cookies)
-        keys = r.text.split('\n')[:-1][::-1]
+        response = requests.get(WPA_SEC_RETRIEVE_URL, cookies=cookies)
+        keys = response.text.split('\n')[:-1][::-1]
         return _extract_nets_from_strings(keys)
 
 
-class FileRetriever(object):
+class FileRetriever:
     def __init__(self, input_stream):
         self._input_steam = input_stream
 

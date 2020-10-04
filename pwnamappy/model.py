@@ -1,4 +1,4 @@
-class Network(object):
+class Network:
     def __init__(self, addr, name, password):
         self._addr = addr
         self._name = name
@@ -26,7 +26,7 @@ class Network(object):
         return self._addr == other._addr
 
 
-class Location(object):
+class Location:
     def __init__(self, lat, lon):
         self._lat = lat
         self._lon = lon

@@ -22,8 +22,8 @@ def run_pipeline(logger, retriever, mapper, formatter):
             location = None
             try:
                 location = mapper(net)
-            except Exception as e:
-                logger.info(e.__repr__())
+            except Exception as exception:
+                logger.info(exception.__repr__())
                 break
             if location:
                 coordinates[net] = location
