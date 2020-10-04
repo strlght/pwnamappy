@@ -11,5 +11,8 @@ setup(
     url='https://github.com/strlght/pwnamappy',
     license='Apache License 2.0',
     install_requires=required,
-    packages=find_packages()
+    packages=find_packages(),
+    entry_points={
+        'console_scripts': ['pwnamappy=pwnamappy.__main__:main'],
+    }
 )
