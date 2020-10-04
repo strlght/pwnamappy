@@ -27,6 +27,8 @@ def run_pipeline(logger, retriever, mapper, formatter):
                 break
             if location:
                 coordinates[net] = location
+            else:
+                logger.info('No location found for %s %s' % (net.addr, net.name))
         logger.info('Mapped %d networks' % len(coordinates))
 
     if len(coordinates) > 0 and callable(formatter):
