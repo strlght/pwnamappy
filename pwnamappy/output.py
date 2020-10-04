@@ -1,7 +1,7 @@
 import csv
 
 
-class CsvFormatter:
+class CsvExporter:
     def __init__(self, output):
         self._output = output
 

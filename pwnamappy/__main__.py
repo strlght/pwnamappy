@@ -3,11 +3,11 @@ import sys
 from pwnamappy.wpasec import ApiRetriever
 from pwnamappy.wpasec import FileRetriever
 from pwnamappy.wigle import WigleMapper
-from pwnamappy.output import CsvFormatter
+from pwnamappy.output import CsvExporter
 from pwnamappy.log import Logger
 
 
-def run_pipeline(logger, retriever, mapper, formatter):
+def run_pipeline(logger, retriever, mapper, exporter):
     nets = []
     if callable(retriever):
         logger.info('Retrieving networks')
@@ -32,9 +32,9 @@ def run_pipeline(logger, retriever, mapper, formatter):
                             (net.addr, net.name))
         logger.info('Mapped %d networks' % len(coordinates))
 
-    if len(coordinates) > 0 and callable(formatter):
+    if len(coordinates) > 0 and callable(exporter):
         logger.info('Saving results')
-        formatter(coordinates)
+        exporter(coordinates)
 
 
 def main():
@@ -65,11 +65,11 @@ def main():
     else:
         destination = sys.stdout
 
-    formatter = CsvFormatter(destination)
+    exporter = CsvExporter(destination)
 
     logger = Logger()
 
-    run_pipeline(logger, retriever, mapper, formatter)
+    run_pipeline(logger, retriever, mapper, exporter)
 
 
 if __name__ == '__main__':
