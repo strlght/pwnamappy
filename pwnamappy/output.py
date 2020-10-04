@@ -8,6 +8,6 @@ class CsvFormatter(object):
     def __call__(self, result):
         writer = csv.writer(self._output)
         writer.writerow(
-            ['Title', 'Description', 'Addr', 'Latitude', 'Longitude'])
+            ['Name', 'Password', 'Addr', 'Latitude', 'Longitude'])
         for (k, v) in result.items():
             writer.writerow([k.name, k.password, k.addr, v.lat, v.lon])
