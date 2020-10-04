@@ -1,13 +1,14 @@
 import csv
+from typing import Any, Callable
 from pwnamappy.model import Location, Network
 
 
 class CsvExporter:
-    def __init__(self, stream):
-        self._stream = stream
+    def __init__(self, stream: Callable[[], Any]):
+        self._stream: Callable[[], Any] = stream
 
     def __call__(self, result):
-        writer = csv.writer(self._stream)
+        writer = csv.writer(self._stream())
         writer.writerow(
             ['Name', 'Password', 'SSID', 'Latitude', 'Longitude'])
         for (network, location) in result.items():
