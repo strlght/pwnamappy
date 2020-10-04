@@ -1,7 +1,6 @@
 import argparse
 import sys
-from pwnamappy.wpasec import ApiRetriever
-from pwnamappy.wpasec import FileRetriever
+from pwnamappy.wpasec import ApiRetriever, FileRetriever
 from pwnamappy.wigle import WigleMapper
 from pwnamappy.output import CsvExporter
 from pwnamappy.log import Logger
