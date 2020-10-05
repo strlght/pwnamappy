@@ -12,7 +12,7 @@ class CsvExporter:
         try:
             writer = csv.writer(stream)
             writer.writerow(
-                ['Name', 'Password', 'SSID', 'Latitude', 'Longitude'])
+                ['Name', 'Password', 'BSSID', 'Latitude', 'Longitude'])
             for (network, location) in result.items():
                 row = [network.name, network.password, network.addr]
                 if location:
@@ -36,7 +36,7 @@ class CsvImporter:
         header = reader.__next__()
         name_idx = header.index('Name')
         password_idx = header.index('Password')
-        ssid_idx = header.index('SSID')
+        ssid_idx = header.index('BSSID')
         lat_idx = header.index('Latitude')
         lon_idx = header.index('Longitude')
         for row in reader:
