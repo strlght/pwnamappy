@@ -14,6 +14,7 @@ def run_pipeline(logger, retriever, mapper, importer, exporter):
 
     coordinates = {}
     if callable(importer):
+        logger.info('Importing previous results')
         coordinates = importer()
 
     if len(nets) > 0 and callable(mapper):
@@ -29,8 +30,8 @@ def run_pipeline(logger, retriever, mapper, importer, exporter):
             except Exception as exception:
                 logger.error(exception.__repr__())
                 break
+            coordinates[net] = location
             if location:
-                coordinates[net] = location
                 count = count + 1
             else:
                 logger.verbose('No location found for %s %s' %

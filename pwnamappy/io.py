@@ -14,8 +14,14 @@ class CsvExporter:
             writer.writerow(
                 ['Name', 'Password', 'SSID', 'Latitude', 'Longitude'])
             for (network, location) in result.items():
-                writer.writerow([network.name, network.password,
-                                 network.addr, location.lat, location.lon])
+                row = [network.name, network.password, network.addr]
+                if location:
+                    row.append(location.lat)
+                    row.append(location.lon)
+                else:
+                    row.append('')
+                    row.append('')
+                writer.writerow(row)
         finally:
             stream.close()
 
@@ -38,6 +44,10 @@ class CsvImporter:
                 continue
             network = Network(
                 row[ssid_idx], row[name_idx], row[password_idx])
-            location = Location(float(row[lat_idx]), float(row[lon_idx]))
+            location = None
+            try:
+                location = Location(float(row[lat_idx]), float(row[lon_idx]))
+            except ValueError:
+                pass
             result[network] = location
         return result
