@@ -18,5 +18,12 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts': ['pwnamappy=pwnamappy.__main__:main'],
-    }
+    },
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Environment :: Console',
+        'License :: OSI Approved :: Apache Software License',
+        'Natural Language :: English',
+        'Programming Language :: Python :: 3',
+    ],
 )
