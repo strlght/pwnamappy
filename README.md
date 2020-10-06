@@ -1,5 +1,5 @@
 # pwnamappy
-[![license badge](https://img.shields.io/github/license/strlght/pwnamappy)](https://github.com/strlght/pwnamappy/blob/main/LICENSE) [![static analysis badge](https://github.com/strlght/pwnamappy/workflows/Static%20analysis/badge.svg)](https://github.com/strlght/pwnamappy/actions?query=workflow%3A%22Static+analysis%22)
+![supported python versions badge](https://img.shields.io/badge/python-3.6|3.7|3.8|3.9-blue.svg) [![license badge](https://img.shields.io/github/license/strlght/pwnamappy)](https://github.com/strlght/pwnamappy/blob/main/LICENSE) [![static analysis badge](https://github.com/strlght/pwnamappy/workflows/Static%20analysis/badge.svg)](https://github.com/strlght/pwnamappy/actions?query=workflow%3A%22Static+analysis%22)
 
 pwnamppy is a CLI tool for turning pwns from [wpa-sec](https://wpa-sec.stanev.org) into pins on the map.
 
