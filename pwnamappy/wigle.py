@@ -3,7 +3,7 @@ import requests
 from pwnamappy.model import Network
 from pwnamappy.model import Location
 
-WIGLE_NETWORK_DETAIL_URL = 'https://api.wigle.net/api/v2/network/detail'
+_wigle_network_detail_url = 'https://api.wigle.net/api/v2/network/detail'
 
 
 class ThrottleException(Exception):
@@ -28,7 +28,7 @@ class WigleMapper:
         auth = requests.auth.HTTPBasicAuth(self._username, self._password)
         params: dict = {'netid': net.addr}
         response = requests.get(
-            WIGLE_NETWORK_DETAIL_URL, params=params, auth=auth)
+            _wigle_network_detail_url, params=params, auth=auth)
         if response.status_code == 401:
             raise ApiKeyException()
         response_json: dict = response.json()

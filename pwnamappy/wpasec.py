@@ -2,7 +2,7 @@ import csv
 import requests
 from pwnamappy.model import Network
 
-WPA_SEC_RETRIEVE_URL = 'https://wpa-sec.stanev.org/?api&dl=1'
+_wpa_sec_dl_url = 'https://wpa-sec.stanev.org/?api&dl=1'
 
 
 def _convert_to_mac_address(addr):
@@ -33,7 +33,7 @@ class ApiRetriever:
 
     def __call__(self):
         cookies = {'key': self._key}
-        response = requests.get(WPA_SEC_RETRIEVE_URL, cookies=cookies)
+        response = requests.get(_wpa_sec_dl_url, cookies=cookies)
         keys = response.text.split('\n')[::-1]
         return _extract_nets_from_strings(keys)
 
