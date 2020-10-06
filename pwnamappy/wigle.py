@@ -1,3 +1,4 @@
+import base64
 import requests
 from pwnamappy.model import Network
 from pwnamappy.model import Location
@@ -17,6 +18,8 @@ class ApiKeyException(Exception):
 
 class WigleMapper:
     def __init__(self, key: str):
+        if ':' not in key:
+            key = base64.decodebytes(key.encode()).decode()
         auth_pair = key.split(':')
         self._username = auth_pair[0]
         self._password = auth_pair[1]
