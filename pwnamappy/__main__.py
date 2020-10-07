@@ -10,7 +10,7 @@ def run_pipeline(logger, retriever, mapper, importer, exporter):
     if callable(retriever):
         logger.info('Retrieving networks')
         nets = retriever()
-        logger.info('Got %d unique networks' % len(nets))
+        logger.info(f'Got {len(nets)} unique networks')
 
     coordinates = {}
     if callable(importer):
@@ -20,10 +20,11 @@ def run_pipeline(logger, retriever, mapper, importer, exporter):
     if len(nets) > 0 and callable(mapper):
         logger.info('Mapping networks')
         count = 0
+        tries = 0
         for net in nets:
             if net in coordinates:
                 continue
-            logger.verbose('Mapping %s %s' % (net.addr, net.name))
+            logger.verbose(f'Mapping {net.addr} {net.name}')
             location = None
             try:
                 location = mapper(net)
@@ -31,12 +32,12 @@ def run_pipeline(logger, retriever, mapper, importer, exporter):
                 logger.error(exception.__repr__())
                 break
             coordinates[net] = location
+            tries = tries + 1
             if location:
                 count = count + 1
             else:
-                logger.verbose('No location found for %s %s' %
-                               (net.addr, net.name))
-        logger.info('Mapped %d networks' % count)
+                logger.verbose(f'No location found for {net.addr} {net.name}')
+        logger.info(f'Mapped {count} out of {tries} networks')
 
     if callable(exporter):
         logger.info('Saving results')
@@ -74,7 +75,7 @@ def main():
         with open(destination, 'r') as input_file:
             input_contents = input_file.readlines()
     except IOError as error:
-        logger.info("Failed to parse input file: %s" % error)
+        logger.info(f'Failed to parse input file: {error}')
     importer = None
     if input_contents:
         importer = CsvImporter(input_contents)

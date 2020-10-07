@@ -8,12 +8,12 @@ _wigle_network_detail_url = 'https://api.wigle.net/api/v2/network/detail'
 
 class ThrottleException(Exception):
     def __repr__(self):
-        return "Got throttled :("
+        return 'Got throttled :('
 
 
 class ApiKeyException(Exception):
     def __repr__(self):
-        return "Invalid API key :("
+        return 'Invalid API key :('
 
 
 class WigleMapper:

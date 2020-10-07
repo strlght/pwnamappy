@@ -17,7 +17,7 @@ class Network:
         return self._password
 
     def __repr__(self):
-        return 'Network(%s, %s, %s)' % (self.addr, self.name, self.password)
+        return f'Network({self.addr}, {self.name}, {self.password})'
 
     def __hash__(self):
         return self._addr.__hash__()
