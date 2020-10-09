@@ -36,6 +36,8 @@ class WigleMapper:
             result_json = response_json['results'][0]
             lat = result_json['trilat']
             lon = result_json['trilong']
+            if lat == 0.0 and lon == 0.0:
+                return None
             return Location(lat, lon)
         if response_json['message'] == 'too many queries today.':
             raise ThrottleException()
