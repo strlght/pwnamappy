@@ -31,6 +31,8 @@ def run_pipeline(logger, retriever, mapper, importer, exporter):
             except Exception as exception:
                 logger.error(exception.__repr__())
                 break
+            if location and location.lat == 0.0 and location.lon == 0.0:
+                location = None
             coordinates[net] = location
             tries = tries + 1
             if location:
