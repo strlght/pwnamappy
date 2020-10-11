@@ -10,20 +10,21 @@ def run_pipeline(logger, retriever, mapper, importer, exporter):
     if callable(retriever):
         logger.info('Retrieving networks')
         nets = retriever()
-        logger.info(f'Got {len(nets)} unique networks')
+        logger.info(f'Extracted {len(nets)} unique networks')
 
     coordinates = {}
     if callable(importer):
         logger.info('Importing previous results')
         coordinates = importer()
+        logger.info(f'Imported {len(coordinates)} networks')
 
-    if len(nets) > 0 and callable(mapper):
+    unmapped_nets = set(nets).difference(coordinates.keys())
+    logger.info(f'Networks to be mapped: {len(unmapped_nets)}')
+    if len(unmapped_nets) > 0 and callable(mapper):
         logger.info('Mapping networks')
         count = 0
         tries = 0
-        for net in nets:
-            if net in coordinates:
-                continue
+        for net in unmapped_nets:
             logger.verbose(f'Mapping {net.addr} {net.name}')
             location = None
             try:
